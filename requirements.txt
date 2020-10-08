@@ -8,3 +8,4 @@ scikit-learn
 matplotlib
 psutil
 jupyter-dash
+jupyter_plotly_dash
