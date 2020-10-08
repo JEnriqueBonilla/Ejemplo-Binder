@@ -1,0 +1,10 @@
+dash==1.16.1
+jupyterlab
+numpy
+scipy
+pandas
+plotly==4.10.0
+scikit-learn
+matplotlib
+psutil
+jupyter-dash
