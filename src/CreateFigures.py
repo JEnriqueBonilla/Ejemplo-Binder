@@ -2,6 +2,14 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 
+LABELS_MAP = {'Age':'edad',
+              'Fare':'Tarifa',
+              'Sex': 'Sexo',
+              'Pclass': 'Clase del Pasajero',
+              'Cabin': 'Cabina',
+              'Embarked': 'Embarcó?'}
+
+
 def crear_figura_regresion(x, y, x_modelo, y_modelo, nombre_modelo, titulo):
     constante = 10
 
@@ -40,3 +48,45 @@ def crear_figuras_entrenamiento_prueba_validacion(datos, x_modelo, y_modelo, nom
             'figura_prueba': figura_prueba,
             'figura_validacion': figura_validacion}
 
+
+def crear_figura_regresion_logistica_una_variable(x, y, x_modelo, y_modelo, limite, variable_options):
+    categoria_predicha = [0 if prob_1 <= limite else 1 for _, prob_1 in y]
+    y_modelo = [prob_1 for _, prob_1 in y_modelo]
+
+    figura = px.scatter(x=x, y=categoria_predicha, opacity=0.65)
+    figura.add_traces(go.Scatter(x=x_modelo, y=y_modelo, name="Regresión logística"))
+    figura.update_layout(title='Regresión Logística con una variable', title_x=0.5,
+                         xaxis_title=LABELS_MAP[variable_options[0]], yaxis_title='Probabilidad de supervivencia')
+
+    return figura
+
+
+def crear_figura_regresion_logistica_dos_varaibles(x, y, limite, variable_options):
+    categoria_predicha = ['No Sobrevivió' if prob_1 <= limite else 'Sobrevivió' for _, prob_1 in y]
+
+    if variable_options[1] == 'Sex':
+        x[variable_options[1]] = ['Masculino' if sexo == 1 else 'Femenino' for sexo in x[variable_options[1]].values]
+
+    figura = px.scatter(x=x[variable_options[0]], y=x[variable_options[1]], opacity=0.65, color=categoria_predicha)
+
+    figura.update_layout(title='Regresión Logística con dos variables',
+                         title_x=0.5,
+                         xaxis_title=LABELS_MAP[variable_options[0]],
+                         yaxis_title=LABELS_MAP[variable_options[1]])
+    return figura
+
+
+def crear_figuras_regresion_logistica(datos_logisticos, variable_options, limite=.5):
+    figura_una_variable = crear_figura_regresion_logistica_una_variable(datos_logisticos['x_prueba'][variable_options[0]],
+                                                                        datos_logisticos['prediccion_una_variable'],
+                                                                        datos_logisticos['x_modelo'],
+                                                                        datos_logisticos['y_modelo'],
+                                                                        limite,
+                                                                        variable_options)
+
+    figura_dos_variables = crear_figura_regresion_logistica_dos_varaibles(datos_logisticos['x_prueba'],
+                                                                          datos_logisticos['prediccion_dos_variables'],
+                                                                          limite,
+                                                                          variable_options)
+
+    return figura_una_variable, figura_dos_variables
