@@ -1,10 +1,8 @@
 import numpy as np
 
-from sklearn.linear_model import Ridge
-from sklearn.pipeline import make_pipeline
 from sklearn.linear_model import LinearRegression, LogisticRegression
-from sklearn.preprocessing import PolynomialFeatures
 from sklearn.neighbors import KNeighborsRegressor
+from sklearn.metrics import mean_squared_error
 
 
 def crear_linea_regresion_lineal(x, y):
@@ -58,3 +56,36 @@ def crear_linea_regresion_logistica(x_train, y_train, x_test, una_variable):
             'prediccion_dos_variables': prediccion_dos_variables,
             'x_modelo': x_modelo,
             'y_modelo': y_modelo}
+
+
+def entrena_regresion_lineal(x, y):
+    x = x.values
+    x = x.reshape(-1, 1)
+
+    modelo = LinearRegression()
+    modelo.fit(x, y)
+
+    return modelo
+
+
+def entrena_k_vecinos(x, y, n_vecinos):
+    x = x.values
+    x = x.reshape(-1, 1)
+
+    modelo = KNeighborsRegressor(n_vecinos, weights='uniform')
+    modelo.fit(x, y)
+
+    return modelo
+
+
+def calcula_error(tipo_error, modelo, datos_altura_peso):
+    x = datos_altura_peso['x_' + tipo_error]
+    x = x.values
+    x = x.reshape(-1, 1)
+
+    y_true = datos_altura_peso['y_' + tipo_error]
+    y_pred = modelo.predict(x)
+
+    return mean_squared_error(y_true, y_pred)
+
+

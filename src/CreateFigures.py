@@ -90,3 +90,12 @@ def crear_figuras_regresion_logistica(datos_logisticos, variable_options, limite
                                                                           variable_options)
 
     return figura_una_variable, figura_dos_variables
+
+
+def graficar_error(figura_error, tipo_de_error, df_errores):
+    df_un_error = df_errores[['nombre_modelos', tipo_de_error]]
+
+    figura_error.add_traces(go.Scatter(x=df_un_error['nombre_modelos'], y=df_un_error[tipo_de_error],
+                                       name='Error de ' + tipo_de_error + ' k vecinos'))
+
+    return figura_error
