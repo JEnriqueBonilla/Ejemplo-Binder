@@ -9,4 +9,4 @@ matplotlib
 psutil
 jupyter-dash
 jupyter_plotly_dash
-import matplotlib.pyplot as plt
+matplotlib
