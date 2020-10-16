@@ -99,3 +99,13 @@ def graficar_error(figura_error, tipo_de_error, df_errores):
                                        name='Error de ' + tipo_de_error + ' k vecinos'))
 
     return figura_error
+
+
+def graficar_error_tipo_de_suelo(figura_error, errores, tipo_de_error):
+    coeficientes, error = zip(*errores[tipo_de_error].items())
+    figura_error.add_traces(go.Scatter(x=coeficientes, y=error,
+                                       name='Error de ' + tipo_de_error))
+
+    figura_error.update_layout(yaxis_title='Error de clasificación', xaxis_title='Coeficientes')
+
+    return figura_error
