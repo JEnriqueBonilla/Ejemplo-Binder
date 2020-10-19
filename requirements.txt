@@ -6,7 +6,7 @@ pandas
 plotly==4.10.0
 scikit-learn
 matplotlib
-psutil
+#psutil
 jupyter-dash
 jupyter_plotly_dash
 matplotlib
